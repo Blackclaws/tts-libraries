@@ -1,0 +1,31 @@
+-- Guard clause in case this has already been set before or by other scripts
+-- You add to the Guid store by simply doing
+-- gameObjectGuidStores.storeName = { tableContent }
+gameObjectGuidStores = gameObjectGuidStores or {}
+
+-- If there are already helpers defined then don't overwrite them
+gameObjectHelpers = gameObjectHelpers or {}
+
+-- Gets a guid for an object by name from all dataStores
+gameObjectHelpers.getGuidByName = function(name)
+	for _, store in pairs(gameObjectGuidStores) do
+			if store[name] ~= nil then
+				return store[name]
+			end
+	end
+	return nil
+end
+
+-- Retrieves an object reference by name from all dataStores
+gameObjectHelpers.getObjectByName = function(name)
+	local guid = gameObjectHelpers.getGuidByName(name)
+	if guid ~= nil then
+		return getObjectFromGUID(guid)
+	end
+	return nil
+end
+
+-- Adds two decks by name from all datastores
+gameObjectHelpers.addDecks = function(deckToAddTo, deckToAdd)
+	gameObjectHelpers.getObjectByName(deckToAddTo).putObject(gameObjectHelpers.getObjectByName(deckToAdd))
+end

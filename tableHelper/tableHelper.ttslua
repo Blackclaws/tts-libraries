@@ -1,0 +1,27 @@
+-- Guard clause
+tableHelpers = tableHelpers or {}
+
+-- Gets the index of a value in table. Only returns one if multiple
+-- Returns nil on index not found
+tableHelpers.getIndexInTable = function(tableToCheck, value)
+	for i, tableValue in ipairs(tableToCheck) do
+		if tableValue == value then
+			return i
+		end
+	end
+	return nil
+end
+
+-- Removes a value from the table. Thorougly.
+tableHelpers.removeValueFromTable = function(tableToCheck, value)
+		index = tableHelpers.getIndexInTable(tableToCheck, value)
+		while index != nil do
+			table.remove(tableToCheck, index)
+			index = tableHelpers.getIndexInTable(tableToCheck, value)
+		end
+end
+
+-- Checks whether a value is in the table passed
+tableHelpers.isValueInTable = function(tableToCheck, value)
+	return tableHelpers.getIndexInTable(tableToCheck, value) ~= nil
+end
